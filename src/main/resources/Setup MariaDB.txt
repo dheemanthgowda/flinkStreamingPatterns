@@ -1,0 +1,36 @@
+
+
+### Start a docker container for MariaDB ###
+
+# make sure to change the volume directive to an actual directory in the filesystem
+docker run \
+    --name streaming-mariadb \
+    -v /Users/linkedin/Documents/mariadb:/var/lib/mysql \
+    -e MYSQL_ROOT_PASSWORD=streaming \
+    -e MYSQL_USER=streaming \
+    -e MYSQL_PASSWORD=streaming \
+    -p 3306:3306 \
+    -d mariadb
+
+### Login into the mysql client ###
+
+docker exec -it streaming-mariadb mysql -u root -pstreaming
+
+### Execute the following commands ###
+
+CREATE DATABASE streaming;
+
+USE streaming;
+
+grant all on streaming to 'streaming'@'%';
+
+CREATE TABLE `order_summary` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `INTERVAL_TIMESTAMP` varchar(45) DEFAULT NULL,
+  `PRODUCT` varchar(45) DEFAULT NULL,
+  `TOTAL_VALUE` double DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+grant all on streaming.order_summary to 'streaming'@'%';
+

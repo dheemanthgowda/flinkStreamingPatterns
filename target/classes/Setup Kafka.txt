@@ -1,0 +1,107 @@
+
+### Download and install Kafka & Zookeeper ###
+1. Go to browser : http://kafka.apache.org/downloads
+
+2. Click on the kafka version for scala 2.12
+
+3. Click and download. Wait for download to complete.
+
+4. Open Terminal. Go to Documents folder
+
+5. Create a Kafka directory and go there
+    mkdir kafka
+    cd kafka
+
+6. Copy the downloaded Kafka binry and unzip it
+    cp ../../Downloads/kafka_2.12-2.6.0.tgz .
+    tar -xvf kafka_2.12-2.6.0.tgz
+
+
+### Start Kafka Services ###
+
+1. Go to the kafka installation folder
+    Cd kafka_2.12-2.6.0
+
+2. Edit the Kafka configuration file to enable listener on localhost:9092
+    vi config/server.properties
+    Setup listener if not already setup. Add /update the following
+        listeners=PLAINTEXT://localhost:9092
+
+3. Start the zookeeper service
+    ./bin/zookeeper-server-start.sh ./config/zookeeper.properties > ./logs/start_zk.log &
+
+4. Start the kafka service
+    ./bin/kafka-server-start.sh ./config/server.properties > ./logs/start_kafka.log &
+
+### Create Topics ###
+
+# CHAPTER 2 #
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.orders.input \
+    --partitions 1 \
+    --replication-factor 1
+
+# CHAPTER 3 #
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.alerts.input \
+    --partitions 1 \
+    --replication-factor 1
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.alerts.critical \
+    --partitions 1 \
+    --replication-factor 1
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.alerts.highvolume \
+    --partitions 1 \
+    --replication-factor 1
+
+# CHAPTER 4 #
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.leaderboards.input \
+    --partitions 1 \
+    --replication-factor 1
+
+# CHAPTER 5 #
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.sentiment.input \
+    --partitions 1 \
+    --replication-factor 1
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.sentiment.output \
+    --partitions 1 \
+    --replication-factor 1
+
+# CHAPTER 6 #
+
+./bin/kafka-topics.sh \
+    --zookeeper localhost:2181 \
+    --create \
+    --topic streaming.views.input \
+    --partitions 1 \
+    --replication-factor 1
+
+# Check if all topics are created correctly
+./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+
+
+

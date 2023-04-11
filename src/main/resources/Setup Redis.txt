@@ -1,0 +1,7 @@
+
+### Start a Redis docker container ###
+
+docker run \
+    --name streaming-redis \
+    -p 6379:6379 \
+    -d redis
