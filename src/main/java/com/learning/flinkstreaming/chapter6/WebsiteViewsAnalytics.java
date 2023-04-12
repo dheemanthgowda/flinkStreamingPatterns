@@ -39,10 +39,10 @@ public class WebsiteViewsAnalytics {
                     = StreamExecutionEnvironment.getExecutionEnvironment();
 
             //Initiate  RedisManager for printing leaderboards
-            RedisManager redisManager = new RedisManager();
-            redisManager.setUp();
-            Thread redisThread = new Thread(redisManager);
-            redisThread.start();
+//            RedisManager redisManager = new RedisManager();
+//            redisManager.setUp();
+//            Thread redisThread = new Thread(redisManager);
+//            redisThread.start();
 
             //Set connection properties to Kafka Cluster
             Properties srcProps = new Properties();
@@ -50,9 +50,9 @@ public class WebsiteViewsAnalytics {
             srcProps.setProperty("group.id", "flink.streaming.realtime");
 
             //Initiate the Kafka Views Generator
-            KafkaViewsDataGenerator viewsGenerator = new KafkaViewsDataGenerator();
-            Thread genThread = new Thread(viewsGenerator);
-            genThread.start();
+//            KafkaViewsDataGenerator viewsGenerator = new KafkaViewsDataGenerator();
+//            Thread genThread = new Thread(viewsGenerator);
+//            genThread.start();
 
             //Setup a Kafka Consumer on Flnk
             FlinkKafkaConsumer<String> kafkaConsumer =
@@ -76,7 +76,7 @@ public class WebsiteViewsAnalytics {
                                 public Tuple4<String, String, String, Integer> map(String csvInput)
                                         throws Exception {
 
-                                    System.out.println("Received Data: " + csvInput);
+//                                    System.out.println("Received Data: " + csvInput);
 
                                     String[] viewsArray = csvInput
                                             .replace("\"","")
@@ -146,53 +146,42 @@ public class WebsiteViewsAnalytics {
                             });
 
             //Print Summary records
-            userWindowedSummary
-                    .map(new MapFunction<Tuple3<String, String, Integer>, Object>() {
-                        @Override
-                        public Object map(Tuple3<String, String, Integer> summary)
-                                throws Exception {
-                            System.out.println("Summary : "
-                                    + " Window = " + summary.f0
-                                    + ", User = " + summary.f1
-                                    + ", Total Minutes = " + summary.f2);
-                            return null;
-                        }
-                    });
+            userWindowedSummary.print();
 
-            //Use a RichSinkFunction to update score by topic
-            viewsData
-                    .addSink(new RichSinkFunction<Tuple4<String,String,String,Integer>>() {
-
-                        RedisManager redisUpdater;
-                        @Override
-                        public void open(Configuration parameters)
-                                throws Exception {
-                            super.open(parameters);
-                            redisUpdater = new RedisManager();
-                            redisUpdater.setUp();
-                        }
-
-                        @Override
-                        public void close() throws Exception {
-                            super.close();
-                        }
-
-                        @Override
-                        public void invoke(Tuple4<String,String,String,Integer> userView,
-                                           Context context)
-                                throws Exception {
-                            //Update score in Redis
-                            redisUpdater.update_score(
-                                    userView.f2, //topic
-                                     1.0); // count 1 per record
-                        }
-                    });
+//            //Use a RichSinkFunction to update score by topic
+//            viewsData
+//                    .addSink(new RichSinkFunction<Tuple4<String,String,String,Integer>>() {
+//
+//                        RedisManager redisUpdater;
+//                        @Override
+//                        public void open(Configuration parameters)
+//                                throws Exception {
+//                            super.open(parameters);
+//                            redisUpdater = new RedisManager();
+//                            redisUpdater.setUp();
+//                        }
+//
+//                        @Override
+//                        public void close() throws Exception {
+//                            super.close();
+//                        }
+//
+//                        @Override
+//                        public void invoke(Tuple4<String,String,String,Integer> userView,
+//                                           Context context)
+//                                throws Exception {
+//                            //Update score in Redis
+//                            redisUpdater.update_score(
+//                                    userView.f2, //topic
+//                                     1.0); // count 1 per record
+//                        }
+//                    });
 
             // execute the streaming pipeline
             streamEnv.execute("Flink Website Views Analytics");
 
-            final CountDownLatch latch = new CountDownLatch(1);
-            latch.await();
+//            final CountDownLatch latch = new CountDownLatch(1);
+//            latch.await();
         }
         catch(Exception e) {
             e.printStackTrace();

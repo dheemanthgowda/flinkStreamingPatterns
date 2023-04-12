@@ -1,4 +1,4 @@
-package com.learning.flinkstreaming.chapter4;
+package com.learning.flinkstreaming.leaderboardPattern;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;

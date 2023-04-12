@@ -1,4 +1,4 @@
-package com.learning.flinkstreaming.chapter4;
+package com.learning.flinkstreaming.leaderboardPattern;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Tuple;

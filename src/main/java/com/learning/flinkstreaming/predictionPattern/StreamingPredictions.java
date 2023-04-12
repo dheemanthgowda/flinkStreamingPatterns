@@ -1,4 +1,4 @@
-package com.learning.flinkstreaming.chapter5;
+package com.learning.flinkstreaming.predictionPattern;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;

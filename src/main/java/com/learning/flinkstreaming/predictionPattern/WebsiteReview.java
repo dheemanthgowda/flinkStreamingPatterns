@@ -1,4 +1,4 @@
-package com.learning.flinkstreaming.chapter5;
+package com.learning.flinkstreaming.predictionPattern;
 
 public class WebsiteReview {
     public String getId() {

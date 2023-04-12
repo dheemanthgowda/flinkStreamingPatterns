@@ -1,4 +1,4 @@
-package com.learning.flinkstreaming.chapter5;
+package com.learning.flinkstreaming.predictionPattern;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
